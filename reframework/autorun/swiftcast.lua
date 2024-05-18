@@ -75,22 +75,24 @@ table.sort(mage_spell_names)
 local current_skill = 0
 local chosen_spell_name
 local chosen_spell_id
-
+local buffer = 2.0 -- default value
 re.on_draw_ui(function()
-    imgui.text("Swiftcast")
-    if imgui.button("Reset") then
-        current_skill = 0
-        -- chosen_spell_name = mage_spell_names[current_skill]
-        -- chosen_spell_id = mage_spells[chosen_spell_name]
-    end
+    if imgui.tree_node("Swiftcast") then
+        imgui.text("Swiftcast")
+        if imgui.button("Reset") then
+            current_skill = 0
+        end
 
-    local changed, new_thing = imgui.combo("List of spells", current_skill, mage_spell_names)
-    if changed then
-        current_skill = new_thing
-        chosen_spell_name = mage_spell_names[current_skill]
-        chosen_spell_id = mage_spells[chosen_spell_name]
-        print(chosen_spell_name, "skillID", chosen_spell_id)
+        local changed, new_thing = imgui.combo("List of spells", current_skill, mage_spell_names)
+        if changed then
+            current_skill = new_thing
+            chosen_spell_name = mage_spell_names[current_skill]
+            chosen_spell_id = mage_spells[chosen_spell_name]
+            print(chosen_spell_name, "skillID", chosen_spell_id)
+        end
+        imgui.tree_pop()
     end
+    
 end)
 
 local timer = os.clock()
@@ -138,7 +140,7 @@ function (args)
             elapsed_time_ = 0.0
             timer = os.clock()
         end
-        if elapsed_time_ > 2.0 and not this_spell_stock_controller["<IsReadyStockedSpellCast>k__BackingField"] and not this_spell_stock_controller["IsEffectStarted"] then
+        if elapsed_time_ > buffer and not this_spell_stock_controller["<IsReadyStockedSpellCast>k__BackingField"] and not this_spell_stock_controller["IsEffectStarted"] then
             if chosen_spell_id == 24 or chosen_spell_id == 26 or chosen_spell_id == 25 then
                 this_weapon["Job"] = origial_weapon_job
                 this_magic_user_context["WeaponJob"] = origial_weapon_job
@@ -202,6 +204,7 @@ local function init_()
     _player_chara = GetManualPlayer()
     elapsed_time_ = 0.0
     ready_to_stock = false
+    buffer = 2.0
 end
 
 init_()
