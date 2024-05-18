@@ -126,6 +126,8 @@ function (args)
         end
         if current_skill == 0 and origial_weapon_job ~= nil then
             if this_job == 6 or this_job == 3 then
+                this_weapon["Job"] = this_job
+                this_magic_user_context["WeaponJob"] = this_job
             elseif this_job == 10 then
                 this_weapon["Job"] = origial_weapon_job
                 this_magic_user_context["WeaponJob"] = origial_weapon_job
