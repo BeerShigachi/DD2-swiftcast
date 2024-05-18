@@ -1,6 +1,6 @@
 -- author : BeerShigachi
 -- date : 18 May 2024
--- version : 1.0.0
+-- version : 1.1.0
 
 
 if reframework.get_commit_count() < 1645 then
@@ -82,6 +82,12 @@ re.on_draw_ui(function()
         if imgui.button("Reset") then
             current_skill = 0
         end
+
+        local changed_, new_ = imgui.drag_float("Hold time", buffer, 0.01, 0.1, 20, "%.2f seconds")
+        if changed_ then
+            buffer = new_
+        end
+
 
         local changed, new_thing = imgui.combo("List of spells", current_skill, mage_spell_names)
         if changed then
@@ -204,7 +210,6 @@ local function init_()
     _player_chara = GetManualPlayer()
     elapsed_time_ = 0.0
     ready_to_stock = false
-    buffer = 2.0
 end
 
 init_()
